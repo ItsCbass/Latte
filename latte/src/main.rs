@@ -5,13 +5,11 @@ mod http_client;
 mod cli_parser;
 mod response;
 
-use std::process;
-
 #[tokio::main]
 async fn main() {
     let app = App::new("latte")
-        .version("1.0")
-        .author("Your Name")
+        .version("0.1")
+        .author("Sebastian Rivera")
         .about("Does awesome things")
         .subcommand(Command::new("get")
             .about("performs a GET request")
