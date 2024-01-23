@@ -10,8 +10,8 @@ A Rust-based commmand-line HTTP client inspired by HTTPie. I've fallen in love w
 
 # Installation
 ```bash
-git clone https://github.com/your-username/httpie-clone.git
-cd httpie-clone
+git clone https://github.com/ItsCbass/Latte.git
+cd latte
 cargo build --release
 ```
 
