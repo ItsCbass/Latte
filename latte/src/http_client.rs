@@ -1,19 +1,32 @@
 // src/http_client.rs
-use reqwest::{self};
+use reqwest::{header::HeaderMap, Client, Error, Method};
 
+pub async fn send_request(
+    method_str: &str,
+    url: &str,
+    headers: Option<HeaderMap>,
+    body: Option<String>,
+) -> Result<String, Error> {
+    let client = Client::new();
+    let method = method_str.parse::<Method>().expect("Invalid HTTP method");
 
-pub async fn send_request(method: &str, url: &str) -> Result<String, reqwest::Error> {
-    let client = reqwest::Client::new();
+    let mut request_builder = client.request(method, url);
 
-    let response = match method {
-        "GET" => client.get(url).send().await?,
-        // Add other methods like POST, PUT, DELETE here
-        _ => panic!("Unsupported method!"),
-    };
+    if let Some(header_map) = headers {
+        request_builder = request_builder.headers(header_map);
+    }
 
+    if let Some(body_content) = body {
+        request_builder = request_builder.body(body_content);
+    }
+
+    let response = request_builder.send().await?;
     let status = response.status();
-    let headers = response.headers().clone();
-    let body = response.text().await?;
+    let response_headers = response.headers().clone();
+    let response_body = response.text().await?;
 
-    Ok(format!("Status: {}\nHeaders: {:?}\nBody:\n{}", status, headers, body))
+    Ok(format!(
+        "Status: {}\nHeaders: {:?}\nBody:\n{}",
+        status, response_headers, response_body
+    ))
 }
