@@ -1,3 +1,5 @@
+// src/main.rs
+
 use clap::{App, Arg, Command};
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::str::FromStr;
